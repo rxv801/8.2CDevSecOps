@@ -35,5 +35,20 @@ pipeline {
                 sh 'npm audit || true'
             }
         }
+
+        stage('SonarCloud Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+                    sh '''
+                        SCANNER=sonar-scanner-7.3.0.5189-macosx-aarch64
+                        if [ ! -d "$SCANNER" ]; then
+                            curl -sSLo scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/${SCANNER}.zip"
+                            unzip -q -o scanner.zip
+                        fi
+                        "$SCANNER/bin/sonar-scanner" -Dsonar.token="$SONAR_TOKEN"
+                    '''
+                }
+            }
+        }
     }
 }

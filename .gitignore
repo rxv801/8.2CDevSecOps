@@ -12,3 +12,6 @@ npm-debug.log
 .idea/
 .dccache
 
+sonar-scanner-*/
+scanner.zip
+.scannerwork/
