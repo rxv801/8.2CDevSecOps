@@ -40,9 +40,11 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
                     sh '''
-                        SCANNER=sonar-scanner-7.3.0.5189-macosx-aarch64
+                        VERSION=7.3.0.5189
+                        PLATFORM=macosx-aarch64
+                        SCANNER="sonar-scanner-${VERSION}-${PLATFORM}"
                         if [ ! -d "$SCANNER" ]; then
-                            curl -sSLo scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/${SCANNER}.zip"
+                            curl -fsSLo scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${VERSION}-${PLATFORM}.zip"
                             unzip -q -o scanner.zip
                         fi
                         "$SCANNER/bin/sonar-scanner" -Dsonar.token="$SONAR_TOKEN"
